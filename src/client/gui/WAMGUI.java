@@ -1,4 +1,4 @@
-package common;
+package client.gui;
 
 import client.gui.WAM;
 import client.gui.WAMNetworkClient;
