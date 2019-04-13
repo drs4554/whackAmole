@@ -6,9 +6,9 @@ public class WAM {
 
     //model
 
-    private int ROWS;
+    private static int ROWS;
 
-    private int COLS;
+    private static int COLS;
 
     private int points;
 

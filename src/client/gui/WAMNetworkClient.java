@@ -15,6 +15,8 @@ public class WAMNetworkClient {
     /** Turn on if standard output debug messages are desired. */
     private static final boolean DEBUG = false;
 
+    public int player;
+
     /**
      * Print method that does something only if DEBUG is true
      *
@@ -94,6 +96,7 @@ public class WAMNetworkClient {
                 throw new RuntimeException("Expected WELCOME message from server");
             }
             this.wam = new WAM(Integer.parseInt(argument[0]), Integer.parseInt(argument[1]), Integer.parseInt(argument[3]));
+            this.player = Integer.parseInt(argument[3]);
             WAMNetworkClient.dPrint("Success connecting to server " + client);
         } catch (IOException e) {
             System.err.println(e);

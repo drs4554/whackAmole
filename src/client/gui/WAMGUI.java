@@ -27,7 +27,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private WAMNetworkClient client;
 
-    Label labels = new Label();
+    private Label labels = new Label();
 
     /**
      * The init method initializes the whack-a-mole GUI display and other
@@ -39,9 +39,9 @@ public class WAMGUI extends Application implements Observer<WAM> {
             List<String> param = getParameters().getRaw();
             String host = param.get(0);
             int port = Integer.parseInt(param.get(1));
-            this.wam = new WAM(wam.getrows(), wam.getcols(), wam.getplayer());
+            this.wam = new WAM(wam.getrows(), wam.getcols(), client.player);
             this.wam.addObserver(this);
-        }
+        } catch(Exception e) {}
     }
 
     private void buttonPressed() {
@@ -67,9 +67,28 @@ public class WAMGUI extends Application implements Observer<WAM> {
     public void start(Stage stage) throws Exception {
 
         GridPane g = makeHoles(wam.getcols(), wam.getrows());
+        VBox vb = new VBox(this.labels, g);
+        Scene scene = new Scene(vb);
+        stage.setScene(scene);
 
-        VBox vb = new VBox();
+    }
 
+    public void refresh() {}
+
+    /**
+     * Called by the model, client.ConnectFourBoard, whenever there is a state change
+     * that needs to be updated by the GUI.
+     *
+     * @param
+     */
+    @Override
+    public void update(WAM wam) {
+        if ( Platform.isFxApplicationThread() ) {
+            this.refresh();
+        }
+        else {
+            Platform.runLater( () -> this.refresh() );
+        }
     }
 
 
@@ -81,4 +100,6 @@ public class WAMGUI extends Application implements Observer<WAM> {
             Application.launch(args);
         }
     }
+
+
 }
