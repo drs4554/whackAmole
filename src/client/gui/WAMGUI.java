@@ -52,7 +52,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
     }
 
     private void buttonPressed() {
-
+        return;
     }
 
     private GridPane makeHoles(int col, int row){
