@@ -81,10 +81,13 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     }
 
+    /**
+     * This method handles the GUI updates
+     */
     public void refresh() {}
 
     /**
-     * Called by the model, client.ConnectFourBoard, whenever there is a state change
+     * Called by the model, client.WAM, whenever there is a state change
      * that needs to be updated by the GUI.
      *
      * @param
@@ -99,7 +102,10 @@ public class WAMGUI extends Application implements Observer<WAM> {
         }
     }
 
-
+    /**
+     * The main method takes in the host and port of the server
+     * @param args cmd line arguments
+     */
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java WhackAmole host port");
