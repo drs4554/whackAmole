@@ -5,6 +5,7 @@ import common.WAMProtocol;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static common.WAMProtocol.*;
@@ -73,14 +74,6 @@ public class WAMNetworkClient {
         new Thread(() -> this.run()).start();
     }
 
-    /**
-     * Tell the local user to choose a move. How this is communicated to
-     * the user is up to the View (UI).
-     */
-    private void makeMove() {
-        wam.makeMove();
-    }
-
 
     /**
      * The WAM game server already running, this is the client constructor that blocks and waits
@@ -107,14 +100,49 @@ public class WAMNetworkClient {
         }
     }
 
-    public void moveMade( String args ) {
-        WAMNetworkClient.dPrint( '!' + WHACK + ',' + args );
+    public void run() {
+        while (go) {
+            try {
+                String request = networkIn.next();
+                String args = networkIn.nextLine().trim();
 
-        String[] fields = args.trim().split( " " );
-        int hole = Integer.parseInt(fields[0]);
-
-        // Update the board model.
-        wam.moveMade(hole);
+                switch (request) {
+                    case MOLE_UP:
+                        wam.moleUP(Integer.parseInt(args));
+                        break;
+                    case MOLE_DOWN:
+                        wam.moleDOWN(Integer.parseInt(args));
+                        break;
+                    case SCORE:
+                        wam.updateScore(Integer.parseInt(args));
+                        break;
+                    case GAME_WON:
+                        wam.gameWon();
+                        go = false;
+                        break;
+                    case GAME_LOST:
+                        wam.gameLost();
+                        go = false;
+                        break;
+                    case GAME_TIED:
+                        wam.gameTied();
+                        go = false;
+                        break;
+                    case ERROR:
+                        wam.error();
+                        go = false;
+                        break;
+                    default:
+                        break;
+                }
+            } catch (NoSuchElementException err) {
+                this.stop();
+            } catch (Exception e) {
+                System.err.println(e);
+                this.stop();
+            }
+        }
+        this.close();
     }
 
     /**
