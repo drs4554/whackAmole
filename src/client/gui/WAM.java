@@ -38,6 +38,8 @@ public class WAM {
         }
     }
 
+
+
     public WAM(int rows, int cols) {
         this.ROWS = rows;
         this.COLS = cols;
@@ -79,5 +81,17 @@ public class WAM {
 
     public void close() {
         alertObservers();
+    }
+
+    public int getrows() {
+        return this.ROWS;
+    }
+
+    public int getcols() {
+        return this.COLS;
+    }
+
+    public status[] getholes() {
+        return this.holes;
     }
 }

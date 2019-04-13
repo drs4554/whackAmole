@@ -80,21 +80,21 @@ public class WAMNetworkClient {
      * for the clients to connect.
      * @param host
      * @param port
-     * @param wam
      */
-    public WAMNetworkClient(String host, int port, WAM wam) {
+    public WAMNetworkClient(String host, int port) {
         try {
             client = new Socket(host, port);
             networkIn = new Scanner(client.getInputStream());
             networkOut = new PrintStream(client.getOutputStream());
-            wam = wam;
             go = true;
 
             String request = networkIn.next();
-            String argument = networkIn.nextLine();
+            String[] argument = networkIn.nextLine().split(" ");
             if (!request.equals(WELCOME)) {
                 throw new RuntimeException("Expected WELCOME message from server");
-            } WAMNetworkClient.dPrint("Success connecting to server " + client);
+            }
+            this.wam = new WAM(Integer.parseInt(argument[0]), Integer.parseInt(argument[1]));
+            WAMNetworkClient.dPrint("Success connecting to server " + client);
         } catch (IOException e) {
             System.err.println(e);
         }
