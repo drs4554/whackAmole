@@ -2,6 +2,12 @@ package client.gui;
 
 import java.util.List;
 
+/**
+ * The model part of the Whack-a-mole game
+ *
+ * @author Sam Chilaka @<soc5881@rit.edu>
+ * @author Dhaval Shrimshal @<drs4554@rit.edu>
+ */
 public class WAM {
 
     //model

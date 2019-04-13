@@ -7,9 +7,16 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 import static common.WAMProtocol.*;
 
+/**
+ * The client interface for the whack-a-mole game server. Each player
+ * gets its own connection to this class. It represents the controller part
+ * of the MVC triumvirate
+ *
+ * @author Sam Chilaka @<soc5881@rit.edu>
+ * @author Dhaval Shrimshal @<drs4554@rit.edu>
+ */
 public class WAMNetworkClient {
 
     /** Turn on if standard output debug messages are desired. */
