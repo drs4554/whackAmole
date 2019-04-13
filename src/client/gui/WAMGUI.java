@@ -46,7 +46,8 @@ public class WAMGUI extends Application implements Observer<WAM> {
         catch (NumberFormatException e) {
             System.err.println(e);
             throw new RuntimeException(e);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println(e);
         }
     }

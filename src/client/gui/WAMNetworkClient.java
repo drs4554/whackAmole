@@ -200,8 +200,8 @@ public class WAMNetworkClient {
      *
      * @param hole the hole that was whacked
      */
-    public void sendMove(int hole) {
-        this.networkOut.println( WHACK + " " + hole );
+    public void sendMove(int hole, int player) {
+        this.networkOut.println( WHACK + " " + hole + " " + player);
     }
 
 }
