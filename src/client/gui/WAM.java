@@ -72,4 +72,12 @@ public class WAM {
     public void updateScore(int score) {
         this.points = score;
     }
+
+    public void error() {
+        alertObservers();
+    }
+
+    public void close() {
+        alertObservers();
+    }
 }

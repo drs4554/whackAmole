@@ -61,7 +61,7 @@ public class WAMNetworkClient {
     public void error( String arguments ) {
         WAMNetworkClient.dPrint( '!' + ERROR + ',' + arguments );
         dPrint( "Fatal error: " + arguments );
-        wam.error( arguments );
+        wam.error();
         this.stop();
     }
 
