@@ -41,7 +41,14 @@ public class WAMGUI extends Application implements Observer<WAM> {
             int port = Integer.parseInt(param.get(1));
             this.wam = new WAM(wam.getrows(), wam.getcols(), client.player);
             this.wam.addObserver(this);
-        } catch(Exception e) {}
+            this.client = new WAMNetworkClient(host, port, this.wam);
+        }
+        catch (NumberFormatException e) {
+            System.err.println(e);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     private void buttonPressed() {
