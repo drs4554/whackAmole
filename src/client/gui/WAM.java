@@ -12,6 +12,8 @@ public class WAM {
 
     private int points;
 
+    private int player;
+
     /** the observers of this model */
     private List<Observer<WAM>> observers;
 
@@ -40,9 +42,10 @@ public class WAM {
 
 
 
-    public WAM(int rows, int cols) {
+    public WAM(int rows, int cols, int player) {
         this.ROWS = rows;
         this.COLS = cols;
+        this.player = player;
         this.points = 0;
 
         this.holes = new status[COLS * ROWS];
@@ -93,5 +96,9 @@ public class WAM {
 
     public status[] getholes() {
         return this.holes;
+    }
+
+    public int getplayer() {
+        return this.player;
     }
 }

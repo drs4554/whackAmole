@@ -93,7 +93,7 @@ public class WAMNetworkClient {
             if (!request.equals(WELCOME)) {
                 throw new RuntimeException("Expected WELCOME message from server");
             }
-            this.wam = new WAM(Integer.parseInt(argument[0]), Integer.parseInt(argument[1]));
+            this.wam = new WAM(Integer.parseInt(argument[0]), Integer.parseInt(argument[1]), Integer.parseInt(argument[3]));
             WAMNetworkClient.dPrint("Success connecting to server " + client);
         } catch (IOException e) {
             System.err.println(e);

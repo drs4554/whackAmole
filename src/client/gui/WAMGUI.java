@@ -25,27 +25,20 @@ public class WAMGUI {
 
     private WAMNetworkClient client;
 
-    Label labels = new Label();
-
-    public void buttonPressed() {
+    private void buttonPressed() {
 
     }
 
-    public GridPane makeHoles(int col, int row){
+    private GridPane makeHoles(int col, int row){
         GridPane g = new GridPane();
-        Image empty = new Image(getClass().getResourceAsStream("empty.png"));
+        Image hole = new Image(getClass().getResourceAsStream("hole.png"));
         for (int c = 0; c < col; c++) {
             for (int r = 0; r < row; r++) {
 
                 Button b = new Button();
-                b.setGraphic(new ImageView(empty));
+                b.setGraphic(new ImageView(hole));
                 b.setOnAction(event -> buttonPressed());
 
-                //add to 2d array
-                myb[c][r] = b;
-
-                //add to gridpane
-                g.add(b, c, r);
             }
         }
         return g;
