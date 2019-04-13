@@ -13,17 +13,36 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 /**
  * JavaFX GUI for a connected game of Whack-A-Mole
  *
  * @author Sam Chilaka @<soc5881@rit.edu>
  * @author Dhaval Shrimshal @<drs4554@rit.edu>
  */
-public class WAMGUI {
+public class WAMGUI extends Application implements Observer<WAM> {
 
     private WAM wam;
 
     private WAMNetworkClient client;
+
+    Label labels = new Label();
+
+    /**
+     * The init method initializes the whack-a-mole GUI display and other
+     * attributes of it
+     */
+    @Override
+    public void init() {
+        try {
+            List<String> param = getParameters().getRaw();
+            String host = param.get(0);
+            int port = Integer.parseInt(param.get(1));
+            this.wam = new WAM(wam.getrows(), wam.getcols(), wam.getplayer());
+            this.wam.addObserver(this);
+        }
+    }
 
     private void buttonPressed() {
 

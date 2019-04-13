@@ -81,7 +81,7 @@ public class WAMNetworkClient {
      * @param host
      * @param port
      */
-    public WAMNetworkClient(String host, int port) {
+    public WAMNetworkClient(String host, int port, WAM wam) {
         try {
             client = new Socket(host, port);
             networkIn = new Scanner(client.getInputStream());
