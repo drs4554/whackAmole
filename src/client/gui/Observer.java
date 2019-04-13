@@ -1,6 +1,15 @@
 package client.gui;
 
-public interface Observer<Subject> {
+/**
+ * An interface representing any class whose objects get notified when
+ * the objects they are observing update them.
+ *
+ * @param <Subject> the type of object an implementor of this interface
+ *                is observing
+ * @author James Heliotis @ RIT CS
+ */
+public interface Observer< Subject > {
+
     /**
      * The observed subject calls this method on each observer that has
      * previously registered with it. This version of the design pattern
