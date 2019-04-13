@@ -11,8 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+
 public class WAMGUI {
     public static void main(String[] args) {
-
+        if (args.length != 2) {
+            System.out.println("Usage: java WhackAmole host port");
+            System.exit(-1);
+        } else {
+            Application.launch(args);
+        }
     }
 }
