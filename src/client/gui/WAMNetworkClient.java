@@ -74,7 +74,9 @@ public class WAMNetworkClient {
 
             String request = networkIn.next();
             String args = networkIn.nextLine();
-            if (!request.equals(WAMProtocol.))
+            if (!request.equals(WAMProtocol.)) {
+
+            }
         }
     }
 }
