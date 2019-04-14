@@ -27,7 +27,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private WAMNetworkClient client;
 
-    private Label labels = new Label();
+    private Label label;
 
     private Button[][] holes;
 
@@ -54,6 +54,17 @@ public class WAMGUI extends Application implements Observer<WAM> {
         catch (Exception e) {
             System.err.println(e);
         }
+    }
+
+    private String getScores(){
+        String[] score = this.wam.points.split(" ");
+        String fin = "";
+        int i = 0;
+        for (String s : score) {
+            fin += "P" + i + ": " + s;
+            i++;
+        }
+        return "";
     }
 
     private void buttonPressed() {
@@ -84,8 +95,11 @@ public class WAMGUI extends Application implements Observer<WAM> {
     public void start(Stage stage) throws Exception {
 
         GridPane g = makeHoles(wam.getcols(), wam.getrows());
-        VBox vb = new VBox(this.labels, g);
         stage.setTitle("Whack*A*Mole");
+        this.label = new Label(this.getScores());
+        Label pnum = new Label("YOU ARE PLAYER NUMBER " + this.wam.getplayer() + "  ::  " + "THE GAME IS ON");
+        pnum.setAlignment(Pos.CENTER);
+        VBox vb = new VBox(this.label, g, pnum);
         Scene scene = new Scene(vb);
         stage.setScene(scene);
         stage.show();
@@ -95,6 +109,8 @@ public class WAMGUI extends Application implements Observer<WAM> {
     }
 
     public void refresh() {
+
+        this.label.setText(this.getScores());
 
         for (int c = 0; c < wam.getcols(); c++) {
             for (int r = 0; r < wam.getrows(); r++) {
