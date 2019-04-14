@@ -62,7 +62,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private GridPane makeHoles(int col, int row){
         GridPane g = new GridPane();
-        Image hole = new Image(getClass().getResourceAsStream("hole.png"));
+        Image hole = new Image(getClass().getResourceAsStream("BlackHole_.png"));
         int i = 0;
         for (int c = 0; c < col; c++) {
             for (int r = 0; r < row; r++) {
@@ -99,7 +99,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
             for (int r = 0; r < wam.getrows(); r++) {
                 Button b = this.holes[c][r];
                 if (wam.holes[Integer.parseInt(b.getId())] == WAM.status.DOWN) {
-                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("hole.png"))));
+                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("BlackHole_.png"))));
                 }
                 else {
                     b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("mole.png"))));
@@ -130,7 +130,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Usage: java WhackAmole host port");
+            System.out.println("Usage: java WhackAMole host port");
             System.exit(-1);
         } else {
             Application.launch(args);
