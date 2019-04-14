@@ -99,7 +99,7 @@ public class WAMNetworkClient {
             this.networkOut = new PrintStream(client.getOutputStream());
             go = true;
 
-//            String request = networkIn.next();
+            //String request = networkIn.next();
             String[] argument = networkIn.nextLine().split("\\s");
             if (!argument[0].equals(WELCOME)) {
                 throw new RuntimeException("Expected WELCOME message from server");
@@ -115,6 +115,10 @@ public class WAMNetworkClient {
         }
     }
 
+    /**
+     * Run the main client loop intended to be started as a separate thread
+     * internally.
+     */
     public void run() {
         while (go) {
             try {

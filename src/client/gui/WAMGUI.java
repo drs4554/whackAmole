@@ -31,6 +31,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private Button[][] holes;
 
+
     /**
      * The init method initializes the whack-a-mole GUI display and other
      * attributes of it
@@ -56,10 +57,22 @@ public class WAMGUI extends Application implements Observer<WAM> {
         }
     }
 
+
+    /**
+     * method handles the status of moles whacked
+     */
     private void buttonPressed() {
         return ;
     }
 
+
+    /**
+     * makeHoles method creates the base playing field for the whack a mole
+     * game
+     * @param col
+     * @param row
+     * @return g
+     */
     private GridPane makeHoles(int col, int row){
         GridPane g = new GridPane();
         Image hole = new Image(getClass().getResourceAsStream("BlackHole_.png"));
@@ -74,13 +87,17 @@ public class WAMGUI extends Application implements Observer<WAM> {
                 g.add(b, c, r);
                 this.holes[c][r] = b;
                 i++;
-
             }
         }
         return g;
     }
 
 
+    /**
+     * start method constructs the GUI layout for the game
+     * @param stage
+     * @throws Exception
+     */
     public void start(Stage stage) throws Exception {
 
         GridPane g = makeHoles(wam.getcols(), wam.getrows());
@@ -94,6 +111,10 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     }
 
+
+    /**
+     * handles the GUI updates as the game progresses
+     */
     public void refresh() {
 
         for (int c = 0; c < wam.getcols(); c++) {
@@ -112,10 +133,10 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     }
 
+
     /**
      * Called by the model, client.ConnectFourBoard, whenever there is a state change
      * that needs to be updated by the GUI.
-     *
      * @param
      */
     @Override
@@ -129,6 +150,10 @@ public class WAMGUI extends Application implements Observer<WAM> {
     }
 
 
+    /**
+     * The main method accepts the host and port
+     * @param args
+     */
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java WhackAMole host port");
