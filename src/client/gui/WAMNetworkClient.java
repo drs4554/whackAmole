@@ -37,25 +37,20 @@ public class WAMNetworkClient {
 
     /** client socket to communicate with server */
     private Socket client;
+
     /** used to read requests from the server */
     private Scanner networkIn;
+
     /** Used to write responses to the server. */
     private PrintStream networkOut;
+
     /** the model which keeps track of the game */
     public WAM wam;
+
     /** sentinel loop used to control the main loop */
     private boolean go;
 
     public int rows, cols;
-
-    /**
-     * Accessor that takes multithreaded access into account
-     *
-     * @return whether it ok to continue or not
-     */
-    private synchronized boolean goodToGo() {
-        return this.go;
-    }
 
     /**
      * Multithread-safe mutator
@@ -73,7 +68,7 @@ public class WAMNetworkClient {
     public void error( String arguments ) {
         WAMNetworkClient.dPrint( '!' + ERROR + ',' + arguments );
         dPrint( "Fatal error: " + arguments );
-        wam.error();
+        wam.error(arguments);
         this.stop();
     }
 
@@ -133,22 +128,22 @@ public class WAMNetworkClient {
                         wam.moleDOWN(Integer.parseInt(args));
                         break;
                     case SCORE:
-                        wam.updateScore(Integer.parseInt(args));
+                        wam.updateScore(args);
                         break;
                     case GAME_WON:
-                        wam.gameWon();
+                        gameWon();
                         go = false;
                         break;
                     case GAME_LOST:
-                        wam.gameLost();
+                        gameLost();
                         go = false;
                         break;
                     case GAME_TIED:
-                        wam.gameTied();
+                        gameTied();
                         go = false;
                         break;
                     case ERROR:
-                        wam.error();
+                        error(args);
                         go = false;
                         break;
                     default:

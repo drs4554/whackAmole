@@ -17,7 +17,7 @@ public class WAM {
 
     public static int COLS;
 
-    private int points;
+    public String points;
 
     private int player;
 
@@ -60,7 +60,7 @@ public class WAM {
         this.ROWS = rows;
         this.COLS = cols;
         this.player = player;
-        this.points = 0;
+        this.points = "";
         this.total = rows * cols;
 
         this.observers = new LinkedList<>();
@@ -114,14 +114,14 @@ public class WAM {
      * called to update score
      * @param score
      */
-    public void updateScore(int score) {
+    public void updateScore(String score) {
         this.points = score;
     }
 
     /**
      * called when an error has occurred
      */
-    public void error() {
+    public void error(String args) {
         alertObservers();
     }
 
