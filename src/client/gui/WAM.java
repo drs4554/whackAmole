@@ -1,18 +1,21 @@
 package client.gui;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class WAM {
 
     //model
 
-    private static int ROWS;
+    public static int ROWS;
 
-    private static int COLS;
+    public static int COLS;
 
     private int points;
 
     private int player;
+
+    public int total;
 
     /** the observers of this model */
     private List<Observer<WAM>> observers;
@@ -47,6 +50,9 @@ public class WAM {
         this.COLS = cols;
         this.player = player;
         this.points = 0;
+        this.total = rows * cols;
+
+        this.observers = new LinkedList<>();
 
         this.holes = new status[COLS * ROWS];
         for (int i = 0; i < COLS * ROWS; i++) {
@@ -56,10 +62,12 @@ public class WAM {
 
     public void moleUP(int num) {
         holes[num] = status.UP;
+        alertObservers();
     }
 
     public void moleDOWN(int num) {
         holes[num] = status.DOWN;
+        alertObservers();
     }
 
     public void gameWon() {

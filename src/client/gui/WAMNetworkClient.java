@@ -35,9 +35,11 @@ public class WAMNetworkClient {
     /** Used to write responses to the server. */
     private PrintStream networkOut;
     /** the model which keeps track of the game */
-    private WAM wam;
+    public WAM wam;
     /** sentinel loop used to control the main loop */
     private boolean go;
+
+    public int rows, cols;
 
     /**
      * Accessor that takes multithreaded access into account
@@ -83,20 +85,22 @@ public class WAMNetworkClient {
      * @param host
      * @param port
      */
-    public WAMNetworkClient(String host, int port, WAM wam) {
+    public WAMNetworkClient(String host, int port) {
         try {
-            client = new Socket(host, port);
-            networkIn = new Scanner(client.getInputStream());
-            networkOut = new PrintStream(client.getOutputStream());
+            this.client = new Socket(host, port);
+            this.networkIn = new Scanner(client.getInputStream());
+            this.networkOut = new PrintStream(client.getOutputStream());
             go = true;
 
-            String request = networkIn.next();
-            String[] argument = networkIn.nextLine().split(" ");
-            if (!request.equals(WELCOME)) {
+//            String request = networkIn.next();
+            String[] argument = networkIn.nextLine().split("\\s");
+            if (!argument[0].equals(WELCOME)) {
                 throw new RuntimeException("Expected WELCOME message from server");
             }
-            this.wam = new WAM(Integer.parseInt(argument[0]), Integer.parseInt(argument[1]), Integer.parseInt(argument[3]));
-            this.player = Integer.parseInt(argument[3]);
+            this.wam = new WAM(Integer.parseInt(argument[1]), Integer.parseInt(argument[2]), Integer.parseInt(argument[4]));
+            this.player = Integer.parseInt(argument[4]);
+            this.rows = Integer.parseInt(argument[1]);
+            this.cols = Integer.parseInt(argument[2]);
             WAMNetworkClient.dPrint("Success connecting to server " + client);
         } catch (IOException e) {
             System.err.println(e);

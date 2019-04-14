@@ -29,6 +29,8 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private Label labels = new Label();
 
+    private Button[][] holes;
+
     /**
      * The init method initializes the whack-a-mole GUI display and other
      * attributes of it
@@ -39,9 +41,11 @@ public class WAMGUI extends Application implements Observer<WAM> {
             List<String> param = getParameters().getRaw();
             String host = param.get(0);
             int port = Integer.parseInt(param.get(1));
-            this.wam = new WAM(wam.getrows(), wam.getcols(), client.player);
+
+            this.client = new WAMNetworkClient(host, port);
+            this.wam = this.client.wam;
             this.wam.addObserver(this);
-            this.client = new WAMNetworkClient(host, port, this.wam);
+            this.holes = new Button[this.client.cols][this.client.rows];
         }
         catch (NumberFormatException e) {
             System.err.println(e);
@@ -59,12 +63,17 @@ public class WAMGUI extends Application implements Observer<WAM> {
     private GridPane makeHoles(int col, int row){
         GridPane g = new GridPane();
         Image hole = new Image(getClass().getResourceAsStream("hole.png"));
+        int i = 0;
         for (int c = 0; c < col; c++) {
             for (int r = 0; r < row; r++) {
 
                 Button b = new Button();
                 b.setGraphic(new ImageView(hole));
                 b.setOnAction(event -> buttonPressed());
+                b.setId(Integer.toString(i));
+                g.add(b, c, r);
+                this.holes[c][r] = b;
+                i++;
 
             }
         }
@@ -78,10 +87,29 @@ public class WAMGUI extends Application implements Observer<WAM> {
         VBox vb = new VBox(this.labels, g);
         Scene scene = new Scene(vb);
         stage.setScene(scene);
+        stage.show();
+
+        this.client.startListener();
 
     }
 
-    public void refresh() {}
+    public void refresh() {
+
+        for (int c = 0; c < wam.getcols(); c++) {
+            for (int r = 0; r < wam.getrows(); r++) {
+                Button b = this.holes[c][r];
+                if (wam.holes[Integer.parseInt(b.getId())] == WAM.status.DOWN) {
+                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("hole.png"))));
+                }
+                else {
+                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("mole.png"))));
+
+                }
+
+            }
+        }
+
+    }
 
     /**
      * Called by the model, client.ConnectFourBoard, whenever there is a state change
