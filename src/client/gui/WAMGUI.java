@@ -85,6 +85,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
         GridPane g = makeHoles(wam.getcols(), wam.getrows());
         VBox vb = new VBox(this.labels, g);
+        stage.setTitle("Whack*A*Mole");
         Scene scene = new Scene(vb);
         stage.setScene(scene);
         stage.show();
