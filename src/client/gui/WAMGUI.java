@@ -89,7 +89,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
      */
     private GridPane makeHoles(int col, int row){
         GridPane g = new GridPane();
-        Image hole = new Image(getClass().getResourceAsStream("BlackHole_.png"));
+        Image hole = new Image(getClass().getResourceAsStream("hole.jpg"));
         int i = 0;
         for (int c = 0; c < col; c++) {
             for (int r = 0; r < row; r++) {
@@ -140,10 +140,10 @@ public class WAMGUI extends Application implements Observer<WAM> {
             for (int r = 0; r < wam.getrows(); r++) {
                 Button b = this.holes[c][r];
                 if (wam.holes[Integer.parseInt(b.getId())] == WAM.status.DOWN) {
-                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("BlackHole_.png"))));
+                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("hole.jpg"))));
                 }
                 else {
-                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("mole.png"))));
+                    b.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("mole.jpg"))));
 
                 }
 
