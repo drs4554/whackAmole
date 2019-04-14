@@ -19,9 +19,9 @@ import static common.WAMProtocol.*;
  */
 public class WAMNetworkClient {
 
-    /** Turn on if standard output debug messages are desired. */
+    //Turn on if standard output debug messages are desired.
     private static final boolean DEBUG = false;
-
+    //player position
     public int player;
 
     /**
