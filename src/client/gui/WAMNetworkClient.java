@@ -104,6 +104,7 @@ public class WAMNetworkClient {
             if (!argument[0].equals(WELCOME)) {
                 throw new RuntimeException("Expected WELCOME message from server");
             }
+
             this.wam = new WAM(Integer.parseInt(argument[1]), Integer.parseInt(argument[2]), Integer.parseInt(argument[4]));
             this.player = Integer.parseInt(argument[4]);
             this.rows = Integer.parseInt(argument[1]);
