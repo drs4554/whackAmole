@@ -21,14 +21,15 @@ public class WAM {
 
     private int player;
 
+    private State state;
+
     public int total;
 
     /** the observers of this model */
     private List<Observer<WAM>> observers;
 
     public enum status {
-        UP,
-        DOWN;
+        UP, DOWN;
     }
 
     public status[] holes;
@@ -62,6 +63,7 @@ public class WAM {
         this.player = player;
         this.points = "";
         this.total = rows * cols;
+        this.state = State.NOT_OVER;
 
         this.observers = new LinkedList<>();
 
@@ -80,6 +82,11 @@ public class WAM {
         alertObservers();
     }
 
+    /** Possible statuses of game */
+    public enum State {
+        NOT_OVER, WON, LOST, TIE, ERROR;
+    }
+
     /**
      * the mole is down
      * @param num
@@ -93,6 +100,7 @@ public class WAM {
      * called when the game is won
      */
     public void gameWon() {
+        this.state = State.WON;
         alertObservers();
     }
 
@@ -100,6 +108,7 @@ public class WAM {
      * called when the game is over and sent to the players who lost
      */
     public void gameLost() {
+        this.state = State.LOST;
         alertObservers();
     }
 
@@ -107,6 +116,7 @@ public class WAM {
      * called when the game is over and it is tied
      */
     public void gameTied() {
+        this.state = State.TIE;
         alertObservers();
     }
 
@@ -122,6 +132,7 @@ public class WAM {
      * called when an error has occurred
      */
     public void error(String args) {
+        this.state = State.ERROR;
         alertObservers();
     }
 
@@ -130,6 +141,14 @@ public class WAM {
      */
     public void close() {
         alertObservers();
+    }
+
+    /**
+     * returns the current state of the game
+      * @return
+     */
+    public State getState() {
+        return state;
     }
 
     /**

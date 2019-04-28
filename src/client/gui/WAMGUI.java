@@ -25,7 +25,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
     private WAMNetworkClient client;
 
-    private Label label;
+    private Label label, message;
 
     private Button[][] holes;
 
@@ -115,15 +115,16 @@ public class WAMGUI extends Application implements Observer<WAM> {
         GridPane g = makeHoles(wam.getcols(), wam.getrows());
         stage.setTitle("Whack*A*Mole");
         this.label = new Label(this.getScores());
+        this.message = new Label("* * * * *");
         Label pnum = new Label("YOU ARE PLAYER NUMBER " + this.wam.getplayer() + "  ::  " + "THE GAME IS ON");
         pnum.setAlignment(Pos.CENTER);
-        VBox vb = new VBox(this.label, g, pnum);
+        VBox vb = new VBox(this.label, g, pnum, message);
         Scene scene = new Scene(vb);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
 
         this.client.startListener();
-
     }
 
 
@@ -148,6 +149,20 @@ public class WAMGUI extends Application implements Observer<WAM> {
             }
         }
 
+        WAM.State status = wam.getState();
+        switch (status) {
+            case WON:
+                this.message.setText("You WON. Yay! :)");
+                break;
+            case LOST:
+                this.message.setText("You LOST. Boo! :(");
+                break;
+            case ERROR:
+                this.message.setText("An ERROR! has occured :/");
+                break;
+            case TIE:
+                this.message.setText("Tied game. You both SUCK (>_<)");
+        }
     }
 
 
