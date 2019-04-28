@@ -30,8 +30,6 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     private boolean flagThread;
 
-    private String score;
-
     public enum status {
         UP,
         DOWN
@@ -106,8 +104,14 @@ public class WAMServer implements Runnable, WAMProtocol {
         return num_players;
     }
 
-    public String getScore() {
-        return score;
+    public void getScores() {
+        String score = "";
+        for (WAMPlayer p : this.players) {
+            score += p.getScore() + " ";
+        }
+        for (WAMPlayer p : this.players) {
+            p.updateScores(score);
+        }
     }
 
     public status[] getMoles() {
@@ -116,6 +120,10 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     public boolean isFlagThread() {
         return flagThread;
+    }
+
+    public void serFlagThread(boolean b) {
+        this.flagThread = b;
     }
 
     /**
@@ -136,11 +144,27 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
 
         MainMoleThread action = new MainMoleThread(this.rows * this.cols, this);
+        TimeThread time = new TimeThread(this.time, this);
+
+        for (WAMPlayer p: this.players) {
+            p.start();
+        }
+
+        time.start();
         action.start();
 
-        boolean flag = true;
-        while(flag) {
+        while(this.flagThread){
+            System.out.print("");
+        }
 
+        for(WAMPlayer p : this.players) {
+            p.close();
+        }
+
+        try {
+            this.server.close();
+        } catch (IOException e) {
+            System.err.println(e);
         }
 
     }

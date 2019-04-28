@@ -1,7 +1,5 @@
 package client.gui;
 
-import client.gui.WAM;
-import client.gui.WAMNetworkClient;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -66,7 +64,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
         String fin = "";
         int i = 0;
         for (String s : score) {
-            fin += "P" + i + ": " + s;
+            fin += "P" + i + ": " + s + "  ||  ";
             i++;
         }
         return fin;

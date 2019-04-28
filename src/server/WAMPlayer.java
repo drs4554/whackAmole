@@ -5,6 +5,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -16,14 +17,15 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     private Socket socket;
 
-    public Scanner scanner;
+    private Scanner scanner;
 
-    public PrintStream printer;
+    private PrintStream printer;
 
     private int player_num;
 
     private WAMServer server;
 
+    private int score;
 
     /**
      * Creates a new {@link WAMPlayer} that will be used to the {@link Socket} to
@@ -39,11 +41,15 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
             this.printer = new PrintStream(socket.getOutputStream());
             this.server = server;
             this.player_num = player_num;
+            this.score = 0;
         } catch (IOException e) {
             throw new IOException(e);
         }
     }
 
+    public int getScore() {
+        return score;
+    }
 
     /**
      * Sends the initial {@link //CONNECT} request to the client
@@ -106,7 +112,34 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     @Override
     public void run(){
+        while(this.server.isFlagThread()) {
+            try {
+                String[] in = scanner.nextLine().split(" ");
+                if (in[0].equals(WHACK)) {
+                    whack(Integer.parseInt(in[1]));
+                    this.server.getScores();
+                } else {
+                    error(in[1]);
+                    close();
+                }
+            } catch (NoSuchElementException e) {
 
+            }
+
+        }
+    }
+
+    public void updateScores(String score){
+        this.printer.println(SCORE + " " + score);
+    }
+
+    private void whack(int num){
+        if (this.server.getMoles()[num] == WAMServer.status.UP) {
+            this.score += 2;
+            moleDOWN(num);
+        } else {
+            this.score -= 1;
+        }
     }
 
     public void moleUP(int num){

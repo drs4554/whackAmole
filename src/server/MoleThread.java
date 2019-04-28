@@ -17,7 +17,7 @@ public class MoleThread extends Thread{
     public void run() {
         try {
             this.server.moleUP(this.mole);
-            sleep(3000 - (difficulty * 25));
+            sleep(3000 - (difficulty * 10));
             this.server.moleDOWN(this.mole);
             difficulty += 1;
         }
