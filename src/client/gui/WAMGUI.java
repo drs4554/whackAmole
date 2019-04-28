@@ -75,8 +75,8 @@ public class WAMGUI extends Application implements Observer<WAM> {
     /**
      * method handles the status of moles whacked
      */
-    private void buttonPressed() {
-        return ;
+    private void buttonPressed(Button b) {
+        client.sendMove(Integer.parseInt(b.getId()), wam.getplayer());
     }
 
 
@@ -96,7 +96,7 @@ public class WAMGUI extends Application implements Observer<WAM> {
 
                 Button b = new Button();
                 b.setGraphic(new ImageView(hole));
-                b.setOnAction(event -> buttonPressed());
+                b.setOnAction(event -> buttonPressed(b));
                 b.setId(Integer.toString(i));
                 g.add(b, c, r);
                 this.holes[c][r] = b;

@@ -1,7 +1,12 @@
 package server;
 
 import common.WAMProtocol;
+
+import java.io.IOException;
+import java.io.PrintStream;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * The WAMServer class is the server domain for the game. It waits for incoming
@@ -13,11 +18,59 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     private ServerSocket server;
 
+    private int rows;
+
+    private int cols;
+
+    private int num_players;
+
+    private int time;
+
+    private WAMPlayer[] players;
+
+    private boolean flagThread;
+
+    private String score;
+
+    public enum status {
+        UP,
+        DOWN
+    }
+
+    private status[] moles;
+
+    public void moleUP(int num) {
+        this.moles[num] = status.UP;
+        for (int i = 0; i < this.num_players; i++) {
+            this.players[i].moleUP(num);
+        }
+    }
+
+    public void moleDOWN(int num) {
+        this.moles[num] = status.DOWN;
+        for (int i = 0; i < this.num_players; i++) {
+            this.players[i].moleDOWN(num);
+        }
+    }
+
     public WAMServer(int port, int rows, int cols, int players, int time) {
         try {
             server = new ServerSocket(port);
+            this.players = new WAMPlayer[players];
 
+        } catch (IOException io) {
+            System.err.println(io);
         }
+        this.num_players = players;
+        this.rows = rows;
+        this.cols = cols;
+        this.time = time;
+        this.moles = new status[rows * cols];
+        for (int i = 0; i < rows * cols; i ++) {
+            this.moles[i] = status.DOWN;
+        }
+        this.flagThread = true;
+
     }
 
     /**
@@ -27,7 +80,7 @@ public class WAMServer implements Runnable, WAMProtocol {
      *             incoming client connections and setting up the game
      */
     public static void main(String[] args) {
-        if (args.length != 4) {
+        if (args.length != 5) {
             System.out.println("Usage: java WAMServer <port> <rows> <columns> <#players> <duration>");
             System.exit(1);
         }
@@ -41,11 +94,54 @@ public class WAMServer implements Runnable, WAMProtocol {
         server.run();
     }
 
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getNum_players() {
+        return num_players;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public status[] getMoles() {
+        return moles;
+    }
+
+    public boolean isFlagThread() {
+        return flagThread;
+    }
+
     /**
      *
      */
     @Override
     public void run() {
+        int i = 0;
+        try {
+            while(i < this.num_players){
+                Socket player = this.server.accept();
+                this.players[i] = new WAMPlayer(player, this, i);
+                this.players[i].connect();
+                i++;
+            }
+        } catch (IOException io) {
+            System.err.println(io);
+        }
+
+        MainMoleThread action = new MainMoleThread(this.rows * this.cols, this);
+        action.start();
+
+        boolean flag = true;
+        while(flag) {
+
+        }
 
     }
 }

@@ -12,11 +12,17 @@ import java.util.Scanner;
  * @author Sam Chilaka
  * @author Dhaval Shrimshal
  */
-public class WAMPlayer extends Thread implements WAMProtocol, Closeable  {
+public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     private Socket socket;
-    private Scanner scanner;
-    private PrintStream printer;
+
+    public Scanner scanner;
+
+    public PrintStream printer;
+
+    private int player_num;
+
+    private WAMServer server;
 
 
     /**
@@ -26,11 +32,13 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable  {
      * @param socket
      * @throws IOException
      */
-    public WAMPlayer(Socket socket) throws IOException {
+    public WAMPlayer(Socket socket, WAMServer server, int player_num) throws IOException {
         this.socket = socket;
         try {
-            scanner = new Scanner(socket.getInputStream());
-            printer = new PrintStream(socket.getOutputStream());
+            this.scanner = new Scanner(socket.getInputStream());
+            this.printer = new PrintStream(socket.getOutputStream());
+            this.server = server;
+            this.player_num = player_num;
         } catch (IOException e) {
             throw new IOException(e);
         }
@@ -40,7 +48,10 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable  {
     /**
      * Sends the initial {@link //CONNECT} request to the client
      */
-    public void connect() { printer.println(WELCOME); }
+    public void connect() {
+        printer.println(WELCOME + " " + this.server.getRows() + " " + this.server.getCols() +
+                " " + this.server.getNum_players() + " " + this.player_num);
+    }
 
 
     /**
@@ -92,4 +103,18 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable  {
              System.err.println(e);
         }
     }
+
+    @Override
+    public void run(){
+
+    }
+
+    public void moleUP(int num){
+        this.printer.println(WAMProtocol.MOLE_UP + " " + num);
+    }
+
+    public void moleDOWN(int num) {
+        this.printer.println(WAMProtocol.MOLE_DOWN + " " + num);
+    }
 }
+
