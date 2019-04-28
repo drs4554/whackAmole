@@ -17,11 +17,12 @@ public class MainMoleThread extends Thread {
     public void run() {
         while(this.server.isFlagThread()){
             Random r = new Random();
+            Random time = new Random();
             int nextMole = r.nextInt(total);
             MoleThread m = new MoleThread(nextMole, this.server);
             m.start();
             try {
-                sleep(1000);
+                sleep(time.nextInt(1000));
             } catch (InterruptedException i) {
                 System.err.print(i);
             }
