@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 /**
  * The WAMServer class is the server domain for the game. It waits for incoming
  * client connections and pairs them to engage in the game {@link client.gui.WAM WAM games}
+ * @author Sam Chilaka
+ * @author Dhaval Shrimshal
  */
 public class WAMServer implements Runnable, WAMProtocol {
 
