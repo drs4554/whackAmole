@@ -48,6 +48,10 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         }
     }
 
+    /**
+     * returns the score of the individual player
+     * @return
+     */
     public int getScore() {
         return score;
     }
@@ -59,7 +63,6 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         printer.println(WELCOME + " " + this.server.getRows() + " " + this.server.getCols() +
                 " " + this.server.getNum_players() + " " + this.player_num);
     }
-
 
     /**
      * Called to send an {@link #ERROR} to the client. This is called if either
@@ -111,6 +114,10 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         }
     }
 
+    /**
+     * The run method of the player's moves as the game
+     * goes on
+     */
     @Override
     public void run(){
         while(this.server.isFlagThread()) {
@@ -127,10 +134,18 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         }
     }
 
+    /**
+     * updates the player's score
+     * @param score
+     */
     public void updateScores(String score){
         this.printer.println(SCORE + " " + score);
     }
 
+    /**
+     * called on the player's move to score or lose a point
+     * @param num
+     */
     private void whack(int num){
         if (this.server.getMoles()[num] == WAMServer.status.UP) {
             this.score += 2;
@@ -140,10 +155,18 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         }
     }
 
+    /**
+     * sends the message to the players that the mole is up
+     * @param num
+     */
     public void moleUP(int num){
         this.printer.println(WAMProtocol.MOLE_UP + " " + num);
     }
 
+    /**
+     * sends the message to the players that the mole is down
+     * @param num
+     */
     public void moleDOWN(int num) {
         this.printer.println(WAMProtocol.MOLE_DOWN + " " + num);
     }
