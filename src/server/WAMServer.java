@@ -166,7 +166,7 @@ public class WAMServer implements Runnable, WAMProtocol {
     }
 
     /**
-     *
+     * called to set the status of the thread's flag
      * @param b
      */
     public void setflagThread(boolean b) {
@@ -197,7 +197,7 @@ public class WAMServer implements Runnable, WAMProtocol {
     }
 
     /**
-     *
+     * run method starts the server
      */
     @Override
     public void run() {

@@ -1,5 +1,11 @@
 package server;
 
+/**
+ * Thread class that controls the timeliness of the game
+ *
+ * @author Dhaval Shrishrimal
+ * @author Sam Chilaka
+ */
 public class TimeThread extends Thread{
 
     private int time_millis;
