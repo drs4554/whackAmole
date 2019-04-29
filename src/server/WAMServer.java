@@ -16,30 +16,57 @@ import java.util.Arrays;
  */
 public class WAMServer implements Runnable, WAMProtocol {
 
+    /**
+     * the server socket
+     */
     private ServerSocket server;
 
+    /**
+     * number of rows
+     */
     private int rows;
 
+    /**
+     * number of cols
+     */
     private int cols;
 
+    /**
+     * number of players
+     */
     private int num_players;
 
+    /**
+     * total time in seconds
+     */
     private int time;
 
+    /**
+     * an array of all the players
+     */
     private WAMPlayer[] players;
 
+    /**
+     * is the game running?
+     */
     private boolean flagThread;
 
+    /**
+     * enum for the mole up and down status
+     */
     public enum status {
         UP,
         DOWN
     }
 
+    /**
+     * an array of status of all the moles
+     */
     private status[] moles;
 
     /**
      * called on a specific position to pop a mole up for the clients
-     * @param num
+     * @param num the mole number
      */
     public void moleUP(int num) {
         this.moles[num] = status.UP;
@@ -50,7 +77,7 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     /**
      * called on a specific position to indicate the mole is down for the clients
-     * @param num
+     * @param num the mole number
      */
     public void moleDOWN(int num) {
         this.moles[num] = status.DOWN;
@@ -62,11 +89,11 @@ public class WAMServer implements Runnable, WAMProtocol {
     /**
      * This is the constructor for the server, it takes the parameters for the
      * game setup
-     * @param port
-     * @param rows
-     * @param cols
-     * @param players
-     * @param time
+     * @param port the port of the server
+     * @param rows number of rows
+     * @param cols number of cols
+     * @param players number of players
+     * @param time total time in seconds
      */
     public WAMServer(int port, int rows, int cols, int players, int time) {
         try {
@@ -110,12 +137,14 @@ public class WAMServer implements Runnable, WAMProtocol {
         int players = Integer.parseInt(args[3]);
         int time = Integer.parseInt(args[4]);
         WAMServer server = new WAMServer(port, rows, cols, players, time);
+
+        //run the server
         server.run();
     }
 
     /**
      * returns the number of columns for the game
-     * @return
+     * @return number of cols
      */
     public int getCols() {
         return cols;
@@ -123,7 +152,7 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     /**
      * returns the number of rows for the game
-     * @return
+     * @return number of rows
      */
     public int getRows() {
         return rows;
@@ -131,7 +160,7 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     /**
      * returns the number of players in the game
-     * @return
+     * @return number of players
      */
     public int getNum_players() {
         return num_players;
@@ -152,15 +181,15 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     /**
      * returns the moles
-     * @return
+     * @return the list of status
      */
     public status[] getMoles() {
         return moles;
     }
 
     /**
-     * is this is a flag or not
-     * @return
+     * is the game running?
+     * @return boolean
      */
     public boolean isFlagThread() {
         return flagThread;
@@ -168,9 +197,9 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     /**
      * called to set the status of the thread's flag
-     * @param b
+     * @param b sets the flag thread
      */
-    public void setflagThread(boolean b) {
+    public void setFlagThread(boolean b) {
         this.flagThread = b;
     }
 
@@ -186,11 +215,14 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
         Arrays.sort(points);
         for (WAMPlayer p: this.players) {
+            // if 2 players or more get the same score
             if (num_players > 1 && points[num_players - 1] == p.getScore() &&
                     points[num_players - 1] == points[num_players - 2]) {
                 p.gameTied();
+            // if the player wins the game
             } else if (points[num_players - 1] == p.getScore()) {
                 p.gameWon();
+            // if the player is just bad at the game
             } else {
                 p.gameLost();
             }
@@ -203,6 +235,7 @@ public class WAMServer implements Runnable, WAMProtocol {
     @Override
     public void run() {
         int i = 0;
+        // creates the list of players and accepts their connections, with handshakes
         try {
             while(i < this.num_players){
                 Socket player = this.server.accept();
@@ -214,30 +247,40 @@ public class WAMServer implements Runnable, WAMProtocol {
             System.err.println(io);
         }
 
+        // creates the mole up and down thread
         MainMoleThread action = new MainMoleThread(this.rows * this.cols, this);
+
+        // creates the time thread
         TimeThread time = new TimeThread(this.time, this);
 
+        // starts the player threads
         for (WAMPlayer p: this.players) {
             p.start();
         }
 
+        // starts the time and action thread
         time.start();
         action.start();
 
+        // waits until the time is up
         while(this.flagThread){
             System.out.print("");
         }
 
+        // finds the winner and sends the conclusion
         findWinner();
 
+        // changes the status of all the moles up
         for (int idx = 0; idx < this.rows * this.cols; i++) {
             moleDOWN(idx);
         }
 
+        // closes all the player sockets
         for(WAMPlayer p : this.players) {
             p.close();
         }
 
+        //closes the server
         try {
             this.server.close();
         } catch (IOException e) {

@@ -8,17 +8,34 @@ package server;
  */
 public class MoleThread extends Thread{
 
+    /**
+     * number of mole
+     */
     private int mole;
 
+    /**
+     * difficulty
+     */
     private static int difficulty = 0;
 
+    /**
+     * server
+     */
     private WAMServer server;
 
+    /**
+     * constructor
+     * @param mole the number of mole
+     * @param server server
+     */
     public MoleThread(int mole, WAMServer server) {
         this.mole = mole;
         this.server = server;
     }
 
+    /**
+     * run method
+     */
     @Override
     public void run() {
         try {

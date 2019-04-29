@@ -16,23 +16,35 @@ import java.util.Scanner;
  */
 public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
+    /**
+     * socket of the player
+     */
     private Socket socket;
 
     private Scanner scanner;
 
     private PrintStream printer;
 
+    /**
+     * the player number
+     */
     private int player_num;
 
+    /**
+     * instance of the server
+     */
     private WAMServer server;
 
+    /**
+     * what is the score?
+     */
     private int score;
 
     /**
      * Creates a new {@link WAMPlayer} that will be used to the {@link Socket} to
      * communicate with the client/player.
      *
-     * @param socket
+     * @param socket the socket number
      * @throws IOException
      */
     public WAMPlayer(Socket socket, WAMServer server, int player_num) throws IOException {
@@ -49,8 +61,8 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     }
 
     /**
-     * returns the score of the individual player
-     * @return
+     * what is the score
+     * @return score
      */
     public int getScore() {
         return score;
@@ -115,8 +127,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     }
 
     /**
-     * The run method of the player's moves as the game
-     * goes on
+     * player thread's run method
      */
     @Override
     public void run(){
@@ -135,16 +146,16 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     }
 
     /**
-     * updates the player's score
-     * @param score
+     * sends the score to client
+     * @param score current score
      */
     public void updateScores(String score){
         this.printer.println(SCORE + " " + score);
     }
 
     /**
-     * called on the player's move to score or lose a point
-     * @param num
+     * when the player whacks the mole
+     * @param num the mole number
      */
     private void whack(int num){
         if (this.server.getMoles()[num] == WAMServer.status.UP) {
@@ -157,7 +168,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     /**
      * sends the message to the players that the mole is up
-     * @param num
+     * @param num the mole number
      */
     public void moleUP(int num){
         this.printer.println(WAMProtocol.MOLE_UP + " " + num);
@@ -165,7 +176,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     /**
      * sends the message to the players that the mole is down
-     * @param num
+     * @param num the mole number
      */
     public void moleDOWN(int num) {
         this.printer.println(WAMProtocol.MOLE_DOWN + " " + num);
