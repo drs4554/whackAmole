@@ -137,7 +137,8 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
         Arrays.sort(points);
         for (WAMPlayer p: this.players) {
-            if (points[num_players - 1] == p.getScore() && points[num_players - 1] == points[num_players - 2]) {
+            if (num_players > 1 && points[num_players - 1] == p.getScore() &&
+                    points[num_players - 1] == points[num_players - 2]) {
                 p.gameTied();
             } else if (points[num_players - 1] == p.getScore()) {
                 p.gameWon();
@@ -179,6 +180,10 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
 
         findWinner();
+
+        for (int idx = 0; idx < this.rows * this.cols; i++) {
+            moleDOWN(idx);
+        }
 
         for(WAMPlayer p : this.players) {
             p.close();
