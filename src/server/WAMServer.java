@@ -3,10 +3,8 @@ package server;
 import common.WAMProtocol;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * The WAMServer class is the server domain for the game. It waits for incoming
@@ -37,6 +35,10 @@ public class WAMServer implements Runnable, WAMProtocol {
 
     private status[] moles;
 
+    /**
+     * called on a specific position to pop a mole up for the clients
+     * @param num
+     */
     public void moleUP(int num) {
         this.moles[num] = status.UP;
         for (int i = 0; i < this.num_players; i++) {
@@ -44,6 +46,10 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
     }
 
+    /**
+     * called on a specific position to indicate the mole is down for the clients
+     * @param num
+     */
     public void moleDOWN(int num) {
         this.moles[num] = status.DOWN;
         for (int i = 0; i < this.num_players; i++) {
@@ -51,6 +57,15 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
     }
 
+    /**
+     * This is the constructor for the server, it takes the parameters for the
+     * game setup
+     * @param port
+     * @param rows
+     * @param cols
+     * @param players
+     * @param time
+     */
     public WAMServer(int port, int rows, int cols, int players, int time) {
         try {
             server = new ServerSocket(port);
@@ -82,6 +97,10 @@ public class WAMServer implements Runnable, WAMProtocol {
             System.out.println("Usage: java WAMServer <port> <rows> <columns> <#players> <duration>");
             System.exit(1);
         }
+        if (Integer.parseInt(args[1])<1||Integer.parseInt(args[2])<1||Integer.parseInt(args[3])<2) {
+            System.out.println("Usage: java Invalid arguments!");
+            System.exit(1);
+        }
 
         int port = Integer.parseInt(args[0]);
         int rows = Integer.parseInt(args[1]);
@@ -92,18 +111,33 @@ public class WAMServer implements Runnable, WAMProtocol {
         server.run();
     }
 
+    /**
+     * returns the number of columns for the game
+     * @return
+     */
     public int getCols() {
         return cols;
     }
 
+    /**
+     * returns the number of rows for the game
+     * @return
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * returns the number of players in the game
+     * @return
+     */
     public int getNum_players() {
         return num_players;
     }
 
+    /**
+     * called to update the scores of every player
+     */
     public void getScores() {
         String score = "";
         for (WAMPlayer p : this.players) {
@@ -114,15 +148,27 @@ public class WAMServer implements Runnable, WAMProtocol {
         }
     }
 
+    /**
+     * returns the moles
+     * @return
+     */
     public status[] getMoles() {
         return moles;
     }
 
+    /**
+     * is this is a flag or not
+     * @return
+     */
     public boolean isFlagThread() {
         return flagThread;
     }
-
-    public void serFlagThread(boolean b) {
+    
+    /**
+     *
+     * @param b
+     */
+    public void setflagThread(boolean b) {
         this.flagThread = b;
     }
 

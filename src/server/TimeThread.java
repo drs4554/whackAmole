@@ -15,7 +15,7 @@ public class TimeThread extends Thread{
     public void run(){
         try {
             sleep(time_millis);
-            this.server.serFlagThread(false);
+            this.server.setflagThread(false);
         } catch (InterruptedException io) {
             System.err.println(io);
         }
