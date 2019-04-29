@@ -122,10 +122,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
                     error(in[1]);
                     close();
                 }
-            } catch (NoSuchElementException e) {
-
-            }
-
+            } catch (NoSuchElementException e) {}
         }
     }
 
@@ -136,7 +133,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     private void whack(int num){
         if (this.server.getMoles()[num] == WAMServer.status.UP) {
             this.score += 2;
-            moleDOWN(num);
+            this.server.moleDOWN(num);
         } else {
             this.score -= 1;
         }

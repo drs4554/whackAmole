@@ -5,6 +5,7 @@ import common.WAMProtocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * The WAMServer class is the server domain for the game. It waits for incoming
@@ -163,13 +164,36 @@ public class WAMServer implements Runnable, WAMProtocol {
     public boolean isFlagThread() {
         return flagThread;
     }
-    
+
     /**
      *
      * @param b
      */
     public void setflagThread(boolean b) {
         this.flagThread = b;
+    }
+
+    /**
+     * finds the maximum score, and sends the player messages on who won
+     */
+    private void findWinner () {
+        int[] points = new int[num_players];
+        int idx = 0;
+        for (WAMPlayer p : this.players) {
+            points[idx] = p.getScore();
+            idx++;
+        }
+        Arrays.sort(points);
+        for (WAMPlayer p: this.players) {
+            if (num_players > 1 && points[num_players - 1] == p.getScore() &&
+                    points[num_players - 1] == points[num_players - 2]) {
+                p.gameTied();
+            } else if (points[num_players - 1] == p.getScore()) {
+                p.gameWon();
+            } else {
+                p.gameLost();
+            }
+        }
     }
 
     /**
@@ -201,6 +225,12 @@ public class WAMServer implements Runnable, WAMProtocol {
 
         while(this.flagThread){
             System.out.print("");
+        }
+
+        findWinner();
+
+        for (int idx = 0; idx < this.rows * this.cols; i++) {
+            moleDOWN(idx);
         }
 
         for(WAMPlayer p : this.players) {
