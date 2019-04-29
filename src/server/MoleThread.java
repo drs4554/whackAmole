@@ -1,5 +1,11 @@
 package server;
 
+/**
+ * The helper thread class to run the moles of the game
+ *
+ * @author Dhaval Shrishrimal
+ * @author Sam Chilaka
+ */
 public class MoleThread extends Thread{
 
     private int mole;

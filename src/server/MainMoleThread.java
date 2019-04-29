@@ -1,5 +1,12 @@
 package server;
 
+/**
+ * The main thread class for the moles in the game
+ *
+ * @author Dhaval Shrishrimal
+ * @author Sam Chilaka
+ */
+
 import java.util.Random;
 
 public class MainMoleThread extends Thread {

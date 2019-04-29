@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * A class that manages the requests and responses to a single client
+ *
  * @author Sam Chilaka
  * @author Dhaval Shrimshal
  */
